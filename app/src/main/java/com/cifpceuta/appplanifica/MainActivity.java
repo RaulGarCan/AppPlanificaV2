@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvTexto;
     private SharedPreferences preferencias;
     private SharedPreferences.Editor editor;
-    private Button btnIniciarSesion, btnRegistrarse;
+    private Button btnIniciarSesion, btnRegistrarse, btnCerrarSesion;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         tvTexto = findViewById(R.id.tv_texto);
         btnIniciarSesion = findViewById(R.id.btn_activity_iniciar_sesion);
         btnRegistrarse = findViewById(R.id.btn_activity_registrarse);
+        btnCerrarSesion = findViewById(R.id.btn_cerrar_sesion);
 
         boolean bienvenida = preferencias.getBoolean("Bienvenida",true);
 
@@ -60,6 +61,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        btnCerrarSesion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tvTexto.setVisibility(View.GONE);
+                btnCerrarSesion.setVisibility(View.INVISIBLE);
+                preferencias.edit().putString("Email","none").apply();
+            }
+        });
     }
     public void pantalla2(){
         tvTexto.setText("Texto2");
@@ -85,10 +94,13 @@ public class MainActivity extends AppCompatActivity {
         editor.putBoolean("Bienvenida",false).apply();
         btnIniciarSesion.setVisibility(View.VISIBLE);
         btnRegistrarse.setVisibility(View.VISIBLE);
-        Intent intent = this.getIntent();
-        if(intent!=null){
+        String email = preferencias.getString("Email","none");
+        if(!email.equalsIgnoreCase("none")){
             tvTexto.setVisibility(View.VISIBLE);
-            tvTexto.setText(intent.getStringExtra("Email"));
+            tvTexto.setText(email);
+            btnCerrarSesion.setVisibility(View.VISIBLE);
+        } else {
+            btnCerrarSesion.setVisibility(View.INVISIBLE);
         }
     }
 }

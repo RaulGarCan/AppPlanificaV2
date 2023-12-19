@@ -4,12 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.lang.reflect.Array;
@@ -21,6 +24,8 @@ public class IniciarSesion extends AppCompatActivity {
     private EditText etEmail, etPassword;
     ManejadorSQLite manejador;
     SQLiteDatabase bd;
+    private SharedPreferences preferences;
+    private ImageButton btnHome;
     boolean registrarse = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +35,9 @@ public class IniciarSesion extends AppCompatActivity {
         btnIniciarSesion = findViewById(R.id.btn_iniciar_sesion);
         etEmail = findViewById(R.id.et_email);
         etPassword = findViewById(R.id.et_password);
+        btnHome = findViewById(R.id.btn_home);
+
+        preferences = this.getSharedPreferences("Preferencias",MODE_PRIVATE);
 
         manejador = new ManejadorSQLite(this);
         bd = manejador.getWritableDatabase();
@@ -53,6 +61,12 @@ public class IniciarSesion extends AppCompatActivity {
                         iniciarSesion();
                     }
                 }
+            }
+        });
+        btnHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(IniciarSesion.this, MainActivity.class));
             }
         });
     }
@@ -91,9 +105,8 @@ public class IniciarSesion extends AppCompatActivity {
         }
         for(String s : passwords){
             if(s.equalsIgnoreCase(etPassword.getText().toString())){
-                Intent intent = new Intent(IniciarSesion.this, MainActivity.class);
-                intent.putExtra("Email",etEmail.getText().toString());
-                startActivity(intent);
+                preferences.edit().putString("Email",etEmail.getText().toString()).apply();
+                startActivity(new Intent(IniciarSesion.this, MainActivity.class));
                 return true;
             }
         }
