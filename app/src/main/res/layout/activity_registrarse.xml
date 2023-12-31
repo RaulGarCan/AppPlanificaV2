@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".IniciarSesion">
+    tools:context=".Registrarse">
     <ImageButton
-        android:id="@+id/btn_home_iniciar_sesion"
+        android:id="@+id/btn_home_registrarse"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:background="@drawable/home_24"
@@ -25,7 +25,31 @@
         android:layout_gravity="center">
 
         <EditText
-            android:id="@+id/et_email_iniciar_sesion"
+            android:id="@+id/et_nombre_registrarse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:ems="10"
+            android:hint="Nombre"
+            android:inputType="text" />
+        <EditText
+            android:id="@+id/et_apellido_registrarse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:ems="10"
+            android:hint="Apellido"
+            android:inputType="text" />
+        <EditText
+            android:id="@+id/et_curso_registrarse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:ems="10"
+            android:hint="Curso"
+            android:inputType="text" />
+        <EditText
+            android:id="@+id/et_email_registrarse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -34,7 +58,7 @@
             android:inputType="textEmailAddress" />
 
         <EditText
-            android:id="@+id/et_password_iniciar_sesion"
+            android:id="@+id/et_password_registrarse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -42,11 +66,11 @@
             android:ems="10"
             android:inputType="textPassword" />
         <Button
-            android:id="@+id/btn_iniciar_sesion"
+            android:id="@+id/btn_registrarse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Iniciar Sesión"/>
+            android:text="Registrarse"/>
     </LinearLayout>
     </LinearLayout>
 </LinearLayout>

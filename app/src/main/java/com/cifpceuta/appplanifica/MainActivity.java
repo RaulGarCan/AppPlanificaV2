@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvTexto;
     private SharedPreferences preferencias;
     private SharedPreferences.Editor editor;
-    private Button btnIniciarSesion, btnRegistrarse, btnCerrarSesion;
+    private Button btnIniciarSesion, btnRegistrarse;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
         tvTexto = findViewById(R.id.tv_texto);
         btnIniciarSesion = findViewById(R.id.btn_activity_iniciar_sesion);
         btnRegistrarse = findViewById(R.id.btn_activity_registrarse);
-        btnCerrarSesion = findViewById(R.id.btn_cerrar_sesion);
 
         boolean bienvenida = preferencias.getBoolean("Bienvenida",true);
 
@@ -49,24 +48,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, IniciarSesion.class);
-                intent.putExtra("Registrarse",false);
                 startActivity(intent);
             }
         });
         btnRegistrarse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, IniciarSesion.class);
-                intent.putExtra("Registrarse",true);
+                Intent intent = new Intent(MainActivity.this, Registrarse.class);
                 startActivity(intent);
-            }
-        });
-        btnCerrarSesion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tvTexto.setVisibility(View.GONE);
-                btnCerrarSesion.setVisibility(View.INVISIBLE);
-                preferencias.edit().putString("Email","none").apply();
             }
         });
     }
@@ -98,9 +87,7 @@ public class MainActivity extends AppCompatActivity {
         if(!email.equalsIgnoreCase("none")){
             tvTexto.setVisibility(View.VISIBLE);
             tvTexto.setText(email);
-            btnCerrarSesion.setVisibility(View.VISIBLE);
-        } else {
-            btnCerrarSesion.setVisibility(View.INVISIBLE);
+            startActivity(new Intent(MainActivity.this, AcitivityHome.class));
         }
     }
 }

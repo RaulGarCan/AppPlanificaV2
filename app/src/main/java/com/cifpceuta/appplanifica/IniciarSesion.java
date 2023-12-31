@@ -22,43 +22,31 @@ import java.util.List;
 public class IniciarSesion extends AppCompatActivity {
     private Button btnIniciarSesion;
     private EditText etEmail, etPassword;
-    ManejadorSQLite manejador;
-    SQLiteDatabase bd;
     private SharedPreferences preferences;
     private ImageButton btnHome;
-    boolean registrarse = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_iniciar_sesion);
 
         btnIniciarSesion = findViewById(R.id.btn_iniciar_sesion);
-        etEmail = findViewById(R.id.et_email);
-        etPassword = findViewById(R.id.et_password);
-        btnHome = findViewById(R.id.btn_home);
+        etEmail = findViewById(R.id.et_email_iniciar_sesion);
+        etPassword = findViewById(R.id.et_password_iniciar_sesion);
+        btnHome = findViewById(R.id.btn_home_iniciar_sesion);
 
         preferences = this.getSharedPreferences("Preferencias",MODE_PRIVATE);
 
-        manejador = new ManejadorSQLite(this);
-        bd = manejador.getWritableDatabase();
-
-        Intent intent = this.getIntent();
-        if(intent!=null){
-            registrarse = intent.getBooleanExtra("Registrarse",false);
-        }
-
-        if(registrarse){
-            btnIniciarSesion.setText("Registrarse");
-        }
+        //manejador = new ManejadorSQLite(this);
+        //bd = manejador.getWritableDatabase();
 
         btnIniciarSesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(comprobarCampos()){
-                    if(registrarse){
-                        registrarse();
-                    } else {
-                        iniciarSesion();
+                    //iniciarSesion();
+                    if(byPassTmp()){
+                        preferences.edit().putString("Email","Usuario").apply();
+                        startActivity(new Intent(IniciarSesion.this, MainActivity.class));
                     }
                 }
             }
@@ -71,24 +59,17 @@ public class IniciarSesion extends AppCompatActivity {
         });
     }
     public void insertar(ContentValues valores){
-        bd.insert(DefinicionBD.Entradas.NOMBRE_TABLA, null, valores);
+        //bd.insert(DefinicionBD.Entradas.NOMBRE_TABLA, null, valores);
     }
     @Override
     protected void onDestroy() {
-        bd.close();
+        //bd.close();
         super.onDestroy();
-    }
-    public void registrarse(){
-        ContentValues valores = new ContentValues();
-        valores.put(DefinicionBD.Entradas.COL_EMAIL, etEmail.getText().toString());
-        valores.put(DefinicionBD.Entradas.COL_PASSWORD,etPassword.getText().toString());
-        insertar(valores);
-        startActivity(new Intent(this, MainActivity.class));
     }
     public boolean iniciarSesion(){
         String selection = DefinicionBD.Entradas.COL_EMAIL + " = ?";
         String[] selectionArgs = {etEmail.getText().toString()};
-
+        /*
         Cursor cursor = bd.query(
                 DefinicionBD.Entradas.NOMBRE_TABLA,
                 null,
@@ -110,9 +91,13 @@ public class IniciarSesion extends AppCompatActivity {
                 return true;
             }
         }
+         */
         return false;
     }
     public boolean comprobarCampos(){
         return !etPassword.getText().toString().isEmpty() || !etEmail.getText().toString().isEmpty();
+    }
+    public boolean byPassTmp(){
+        return etEmail.getText().toString().equalsIgnoreCase("a") && etPassword.getText().toString().equalsIgnoreCase("a");
     }
 }
