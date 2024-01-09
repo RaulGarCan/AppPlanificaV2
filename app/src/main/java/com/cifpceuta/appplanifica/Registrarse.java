@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -17,7 +18,8 @@ import java.util.ArrayList;
 
 public class Registrarse extends AppCompatActivity {
     private Button btnIniciarSesion;
-    private EditText etEmail, etPassword, etNombre, etApellido, etCurso;
+    private EditText etEmail, etPassword, etNombre, etCurso;
+    private CheckBox cbTarde;
     private ImageButton btnHome;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +30,7 @@ public class Registrarse extends AppCompatActivity {
         etEmail = findViewById(R.id.et_email_registrarse);
         etPassword = findViewById(R.id.et_password_registrarse);
         etNombre = findViewById(R.id.et_nombre_registrarse);
-        etApellido = findViewById(R.id.et_apellido_registrarse);
+        cbTarde = findViewById(R.id.cb_tarde_registrarse);
         etCurso = findViewById(R.id.et_curso_registrarse);
         btnHome = findViewById(R.id.btn_home_registrarse);
 

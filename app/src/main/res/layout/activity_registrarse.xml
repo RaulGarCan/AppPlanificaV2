@@ -23,6 +23,11 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="center">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center">
 
         <EditText
             android:id="@+id/et_nombre_registrarse"
@@ -32,14 +37,7 @@
             android:ems="10"
             android:hint="Nombre"
             android:inputType="text" />
-        <EditText
-            android:id="@+id/et_apellido_registrarse"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:ems="10"
-            android:hint="Apellido"
-            android:inputType="text" />
+
         <EditText
             android:id="@+id/et_curso_registrarse"
             android:layout_width="wrap_content"
@@ -48,6 +46,11 @@
             android:ems="10"
             android:hint="Curso"
             android:inputType="text" />
+        <CheckBox
+            android:id="@+id/cb_tarde_registrarse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tarde"/>
         <EditText
             android:id="@+id/et_email_registrarse"
             android:layout_width="wrap_content"
@@ -65,6 +68,7 @@
             android:hint="Contraseña"
             android:ems="10"
             android:inputType="textPassword" />
+        </LinearLayout>
         <Button
             android:id="@+id/btn_registrarse"
             android:layout_width="wrap_content"
