@@ -6,12 +6,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".Registrarse">
-    <ImageButton
-        android:id="@+id/btn_home_registrarse"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@drawable/home_24"
-        android:text="Volver"/>
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_registro"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/design_default_color_primary"
+        app:title="Registrar Usuario"
+        app:titleTextColor="@color/white">
+    </androidx.appcompat.widget.Toolbar>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -31,43 +35,88 @@
 
         <EditText
             android:id="@+id/et_nombre_registrarse"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:ems="10"
             android:hint="Nombre"
-            android:inputType="text" />
-
-        <EditText
-            android:id="@+id/et_curso_registrarse"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:ems="10"
-            android:hint="Curso"
-            android:inputType="text" />
-        <CheckBox
-            android:id="@+id/cb_tarde_registrarse"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tarde"/>
+            android:inputType="text"
+            android:paddingBottom="20dp"/>
         <EditText
             android:id="@+id/et_email_registrarse"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:ems="10"
-            android:hint="Email"
-            android:inputType="textEmailAddress" />
+            android:hint="Correo Electrónico"
+            android:inputType="textEmailAddress"
+            android:paddingBottom="20dp"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Grupo"
+                        android:textSize="20sp"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="20dp"/>
 
+                    <Spinner
+                        android:id="@+id/sp_grupo_registrarse"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:backgroundTint="@color/black"
+                        android:inputType="text"
+                        android:layout_marginTop="12dp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Turno"
+                        android:textSize="20sp"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="20dp"/>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <RadioGroup
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <RadioButton
+                                android:id="@+id/rb_maniana_registrarse"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Mañana"/>
+                            <RadioButton
+                                android:id="@+id/rb_tarde_registrarse"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Tarde"/>
+                        </RadioGroup>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
         <EditText
             android:id="@+id/et_password_registrarse"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:hint="Contraseña"
             android:ems="10"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:paddingBottom="20dp"/>
         </LinearLayout>
         <Button
             android:id="@+id/btn_registrarse"

@@ -67,31 +67,6 @@ public class IniciarSesion extends AppCompatActivity {
         super.onDestroy();
     }
     public boolean iniciarSesion(){
-        String selection = DefinicionBD.Entradas.COL_EMAIL + " = ?";
-        String[] selectionArgs = {etEmail.getText().toString()};
-        /*
-        Cursor cursor = bd.query(
-                DefinicionBD.Entradas.NOMBRE_TABLA,
-                null,
-                selection,
-                selectionArgs,
-                null,
-                null,
-                null
-        );
-        ArrayList<String> passwords = new ArrayList<>();
-        while(cursor.moveToNext()){
-            String password = cursor.getString(cursor.getColumnIndexOrThrow(DefinicionBD.Entradas.COL_PASSWORD));
-            passwords.add(password);
-        }
-        for(String s : passwords){
-            if(s.equalsIgnoreCase(etPassword.getText().toString())){
-                preferences.edit().putString("Email",etEmail.getText().toString()).apply();
-                startActivity(new Intent(IniciarSesion.this, MainActivity.class));
-                return true;
-            }
-        }
-         */
         return false;
     }
     public boolean comprobarCampos(){
