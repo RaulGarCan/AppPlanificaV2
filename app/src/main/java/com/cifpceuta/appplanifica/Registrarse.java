@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -22,12 +23,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Registrarse extends AppCompatActivity {
     private Button btnIniciarSesion;
@@ -36,12 +42,14 @@ public class Registrarse extends AppCompatActivity {
     private RadioButton rbTarde, rbManiana;
     private Toolbar toolbar;
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrarse);
 
         mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         toolbar = findViewById(R.id.toolbar_registro);
         setSupportActionBar(toolbar);
@@ -55,7 +63,7 @@ public class Registrarse extends AppCompatActivity {
             valoresGrupos[i] = grupos[i].name();
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, valoresGrupos);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, valoresGrupos);
 
         spGrupo = findViewById(R.id.sp_grupo_registrarse);
         spGrupo.setAdapter(adapter);
@@ -76,14 +84,26 @@ public class Registrarse extends AppCompatActivity {
                 }
             }
         });
+
+        rbManiana.setChecked(true);
     }
 
     @Override
     protected void onDestroy() {
-        //bd.close();
         super.onDestroy();
     }
     public void registrarse(){
+        String nombre = etNombre.getText().toString();
+        String email = etEmail.getText().toString();
+        String grupo = spGrupo.getSelectedItem().toString();
+        String turno;
+        if(rbTarde.isChecked()){
+            turno = "Tarde";
+        } else if(rbManiana.isChecked()){
+            turno = "Mañana";
+        } else {
+            turno = "";
+        }
         mAuth
                 .createUserWithEmailAndPassword(etEmail.getText().toString(), etPassword.getText().toString())
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -96,6 +116,8 @@ public class Registrarse extends AppCompatActivity {
                                             "Registro realizado correctamente!",
                                             Toast.LENGTH_LONG)
                                     .show();
+                            Estudiante estudiante = new Estudiante(nombre,email,grupo,turno);
+                            completarRegistroUsuario(estudiante,mAuth.getCurrentUser().getUid());
 
 
                             // si el usuario se ha creado volvemos al Activity Principal para que se pueda logear
@@ -120,7 +142,26 @@ public class Registrarse extends AppCompatActivity {
     public boolean comprobarCampos(){
         return !etPassword.getText().toString().isEmpty() || !etEmail.getText().toString().isEmpty();
     }
-    public void completarRegistroUsuario(){
+    public void completarRegistroUsuario(Estudiante estudiante, String userID){
+        Map<String, Object> estudianteMap = new HashMap<>();
+        estudianteMap.put("nombre", estudiante.getNombre());
+        estudianteMap.put("email",estudiante.getEmail());
+        estudianteMap.put("grupo", estudiante.getGrupo());
+        estudianteMap.put("turno", estudiante.getTurno());
 
+        db.collection("estudiantes").document(userID)
+                .set(estudianteMap)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("RegistroCompletoUsuario", "Correcto");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("RegistroCompletoUsuario", "Fallido", e);
+                    }
+                });
     }
 }
