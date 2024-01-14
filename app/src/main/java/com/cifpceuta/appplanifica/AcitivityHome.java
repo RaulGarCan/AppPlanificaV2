@@ -26,7 +26,7 @@ public class AcitivityHome extends AppCompatActivity {
         editor = preferencias.edit();
 
         String usuario = preferencias.getString("Email","error");
-        nombreUsuario.setText(usuario);
+        nombreUsuario.setText("Bienvenid@ "+usuario);
 
 
         btnCerrarSesion.setOnClickListener(new View.OnClickListener() {
