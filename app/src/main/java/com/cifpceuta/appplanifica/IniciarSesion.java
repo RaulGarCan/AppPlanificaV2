@@ -82,6 +82,7 @@ public class IniciarSesion extends AppCompatActivity {
         super.onDestroy();
     }
     public void iniciarSesion(){
+        progressBar.setVisibility(View.VISIBLE);
         String email = etEmail.getText().toString();
         String password = etPassword.getText().toString();
         mAuth.signInWithEmailAndPassword(email, password)

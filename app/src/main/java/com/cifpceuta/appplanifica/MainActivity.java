@@ -85,8 +85,6 @@ public class MainActivity extends AppCompatActivity {
         btnRegistrarse.setVisibility(View.VISIBLE);
         String email = preferencias.getString("Email","none");
         if(!email.equalsIgnoreCase("none")){
-            tvTexto.setVisibility(View.VISIBLE);
-            tvTexto.setText(email);
             startActivity(new Intent(MainActivity.this, AcitivityHome.class));
         }
     }
