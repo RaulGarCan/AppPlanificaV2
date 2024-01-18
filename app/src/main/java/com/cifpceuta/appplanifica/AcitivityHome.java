@@ -10,11 +10,22 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.Map;
 
 public class AcitivityHome extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private SharedPreferences preferencias;
@@ -22,10 +33,16 @@ public class AcitivityHome extends AppCompatActivity implements NavigationView.O
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private Toolbar toolbar;
+    private String nombre, correo, turno, grupo;
+    private FirebaseAuth auth;
+    private FirebaseFirestore db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_acitivity_home);
+
+        auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         preferencias = this.getSharedPreferences("Preferencias",MODE_PRIVATE);
         editor = preferencias.edit();
@@ -41,12 +58,15 @@ public class AcitivityHome extends AppCompatActivity implements NavigationView.O
         NavigationView navigationView = findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        String usuario = preferencias.getString("Email","error");
-        DefaultFragment defaultFragment = DefaultFragment.newInstance(usuario);
+        correo = preferencias.getString("Email","error");
+
+        DefaultFragment defaultFragment = DefaultFragment.newInstance(correo);
 
         if(savedInstanceState==null){
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_fragments,defaultFragment).commit();
         }
+
+        obtenerDatosUsuario();
     }
     public void cerrarSesion(){
         preferencias.edit().putString("Email","none").apply();
@@ -60,8 +80,9 @@ public class AcitivityHome extends AppCompatActivity implements NavigationView.O
             // Acción para la opción 1
             // Puedes abrir un nuevo fragmento, iniciar una nueva actividad, etc.
 
+            PerfilEstudianteFragment perfilEstudianteFragment = PerfilEstudianteFragment.newInstance(nombre, correo, turno, grupo);
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.frame_fragments, new PerfilEstudianteFragment())
+                    .replace(R.id.frame_fragments, perfilEstudianteFragment)
                     .commit();
 
         }
@@ -72,8 +93,35 @@ public class AcitivityHome extends AppCompatActivity implements NavigationView.O
             // Por ejemplo, iniciar una nueva actividad
             cerrarSesion();
         }
-
+        else
+        if (itemId == R.id.plan_practica){
+            PlanificarPracticaFragment planificarPracticaFragment = new PlanificarPracticaFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.frame_fragments,planificarPracticaFragment)
+                    .commit();
+        }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+    public void obtenerDatosUsuario(){
+        String userId = auth.getCurrentUser().getUid();
+        db.collection("estudiantes").document(userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot document = task.getResult();
+                    if(document.exists()){
+                        Map<String, Object> datos = document.getData();
+                        nombre = (String)datos.get("nombre");
+                        turno = (String)datos.get("turno");
+                        grupo = (String)datos.get("grupo");
+                    }else {
+                        Log.w("ConseguirDatosUser","Documento no encontrado");
+                    }
+                } else {
+                    Log.w("ConseguirDatosUser","Error: "+task.getException());
+                }
+            }
+        });
     }
 }

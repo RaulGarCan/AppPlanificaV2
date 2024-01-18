@@ -6,9 +6,60 @@
     tools:context=".PerfilEstudianteFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="50dp"
+        android:paddingTop="50dp">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nombre"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Correo"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Turno"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Grupo"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+            <TextView
+                android:id="@+id/tv_nombre_perfil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nombre"/>
+            <TextView
+                android:id="@+id/tv_correo_perfil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Correo"/>
+            <TextView
+                android:id="@+id/tv_turno_perfil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Turno"/>
+            <TextView
+                android:id="@+id/tv_grupo_perfil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Grupo"/>
+        </LinearLayout>
+    </LinearLayout>
 
 </FrameLayout>
