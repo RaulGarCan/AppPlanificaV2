@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">AppPlanifica</string>
-    <string name="nav_open"></string>
-    <string name="nav_close"></string>
+    <string name="nav_open">NavOpen</string>
+    <string name="nav_close">NavClose</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
