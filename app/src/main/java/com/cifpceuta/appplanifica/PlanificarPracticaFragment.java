@@ -105,27 +105,43 @@ public class PlanificarPracticaFragment extends Fragment {
                 String descripcionPrac = etDescripcionPrac.getText().toString();
 
                 Map<String, Object> datos = new HashMap<>();
-                datos.put("titulo",tituloPrac);
-                datos.put("fechaInicio",fechaInicioPrac);
-                datos.put("fechaFin",fechaFinPrac);
-                datos.put("descripcion",descripcionPrac);
 
-                db.collection("practicas").document(grupoPrac+":"+moduloPrac).set(datos).
-                        addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()){
-                                    Log.d("GuardarPracticaNueva","Datos guardados correctamente");
-                                    Toast.makeText(PlanificarPracticaFragment.this.getContext(),"Practica guardada correctamente",Toast.LENGTH_LONG).show();
-                                    etTituloPrac.setText("");
-                                    etFechaInicioPrac.setText("");
-                                    etFechaFinPrac.setText("");
-                                    etDescripcionPrac.setText("");
-                                } else {
-                                    Log.w("GuardarPracticaNueva","Error: "+task.getException());
-                                }
+                db.collection("practicas").document(grupoPrac).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            Log.d("DatosAntiguosPracticas","Datos recibidos correctamente");
+                            DocumentSnapshot document = task.getResult();
+                            if(document.exists()){
+                                ArrayList<Practica> practicas = (ArrayList<Practica>) document.get("practicas");
+                                practicas.add(new Practica(moduloPrac, descripcionPrac, fechaInicioPrac, fechaFinPrac, tituloPrac));
+
+                                datos.put("practicas",practicas);
+
+                                db.collection("practicas").document(grupoPrac).set(datos).
+                                        addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()){
+                                                    Log.d("GuardarPracticaNueva","Datos guardados correctamente");
+                                                    Toast.makeText(PlanificarPracticaFragment.this.getContext(),"Practica guardada correctamente",Toast.LENGTH_LONG).show();
+                                                    etTituloPrac.setText("");
+                                                    etFechaInicioPrac.setText("");
+                                                    etFechaFinPrac.setText("");
+                                                    etDescripcionPrac.setText("");
+                                                } else {
+                                                    Log.w("GuardarPracticaNueva","Error: "+task.getException());
+                                                }
+                                            }
+                                        });
+                            } else {
+                                Log.w("DatosAntiguosPracticas","Documento no encontrado");
                             }
-                        });
+                        } else {
+                            Log.w("DatosAntiguosPracticas","Error: "+task.getException());
+                        }
+                    }
+                });
             }
         });
 
