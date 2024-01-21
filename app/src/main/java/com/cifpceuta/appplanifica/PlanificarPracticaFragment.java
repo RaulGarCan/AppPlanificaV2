@@ -11,7 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -21,6 +24,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.w3c.dom.Document;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -72,6 +77,11 @@ public class PlanificarPracticaFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_planificar_practica, container, false);
         Spinner spGrupo = rootView.findViewById(R.id.sp_grupo_plan_practica);
         Spinner spModulo = rootView.findViewById(R.id.sp_modulo_plan_practica);
+        Button btnGuardar = rootView.findViewById(R.id.btn_guardar_plan_practica);
+        EditText etTituloPrac = rootView.findViewById(R.id.et_titulo_practica_plan_practica);
+        EditText etFechaInicioPrac = rootView.findViewById(R.id.et_fecha_inicio_plan_practica);
+        EditText etFechaFinPrac = rootView.findViewById(R.id.et_fecha_fin_plan_practica);
+        EditText etDescripcionPrac = rootView.findViewById(R.id.et_descripcion_plan_practica);
 
         String[] grupos = new String[Grupos.values().length];
         for(int i = 0; i<Grupos.values().length; i++){
@@ -83,9 +93,45 @@ public class PlanificarPracticaFragment extends Fragment {
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        spGrupo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+        btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onClick(View v) {
+                String tituloPrac = etTituloPrac.getText().toString();
+                String fechaInicioPrac = etFechaInicioPrac.getText().toString();
+                String fechaFinPrac = etFechaFinPrac.getText().toString();
+                String grupoPrac = spGrupo.getSelectedItem().toString();
+                String moduloPrac = spModulo.getSelectedItem().toString();
+                String descripcionPrac = etDescripcionPrac.getText().toString();
+
+                Map<String, Object> datos = new HashMap<>();
+                datos.put("titulo",tituloPrac);
+                datos.put("fechaInicio",fechaInicioPrac);
+                datos.put("fechaFin",fechaFinPrac);
+                datos.put("descripcion",descripcionPrac);
+
+                db.collection("practicas").document(grupoPrac+":"+moduloPrac).set(datos).
+                        addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()){
+                                    Log.d("GuardarPracticaNueva","Datos guardados correctamente");
+                                    Toast.makeText(PlanificarPracticaFragment.this.getContext(),"Practica guardada correctamente",Toast.LENGTH_LONG).show();
+                                    etTituloPrac.setText("");
+                                    etFechaInicioPrac.setText("");
+                                    etFechaFinPrac.setText("");
+                                    etDescripcionPrac.setText("");
+                                } else {
+                                    Log.w("GuardarPracticaNueva","Error: "+task.getException());
+                                }
+                            }
+                        });
+            }
+        });
+
+        spGrupo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String grupo = parent.getItemAtPosition(position).toString();
                 db.collection("modulos").document(grupo).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -94,6 +140,13 @@ public class PlanificarPracticaFragment extends Fragment {
                             DocumentSnapshot document = task.getResult();
                             if(document.exists()){
                                 Map<String, Object> datos = document.getData();
+                                ArrayList<String> listaModulos = (ArrayList<String>) datos.get(grupo);
+                                String[] modulos = new String[listaModulos.size()];
+                                for(int i = 0; i<modulos.length; i++){
+                                    modulos[i] = listaModulos.get(i);
+                                }
+                                ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(PlanificarPracticaFragment.this.getContext(), android.R.layout.simple_spinner_dropdown_item,modulos);
+                                spModulo.setAdapter(adapter);
                             } else {
                                 Log.w("ModulosGrupos","Documento no encontrado");
                             }
@@ -102,6 +155,11 @@ public class PlanificarPracticaFragment extends Fragment {
                         }
                     }
                 });
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
         // Inflate the layout for this fragment

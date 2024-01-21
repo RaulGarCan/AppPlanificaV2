@@ -28,6 +28,7 @@
                 android:layout_height="wrap_content"
                 android:text="Título Tarea"/>
             <EditText
+                android:id="@+id/et_titulo_practica_plan_practica"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="Práctica 1"
@@ -44,10 +45,11 @@
                         android:layout_height="wrap_content"
                         android:text="Fecha Inicio"/>
                     <EditText
+                        android:id="@+id/et_fecha_inicio_plan_practica"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:inputType="date"
-                        android:hint="01/01/2000"
+                        android:hint="30/01/2000"
                         android:ems="5"/>
                     <TextView
                         android:layout_width="wrap_content"
@@ -70,10 +72,11 @@
                         android:layout_height="wrap_content"
                         android:text="Fecha Fin"/>
                     <EditText
+                        android:id="@+id/et_fecha_fin_plan_practica"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:inputType="date"
-                        android:hint="01/01/2000"
+                        android:hint="30/01/2000"
                         android:ems="5"/>
                     <TextView
                         android:layout_width="wrap_content"
@@ -88,10 +91,10 @@
                 </LinearLayout>
             </LinearLayout>
             <EditText
+                android:id="@+id/et_descripcion_plan_practica"
                 android:padding="5dp"
                 android:background="@drawable/descripcion_border"
                 android:layout_marginTop="20dp"
-                android:id="@+id/editTextTextMultiLine2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="14"
@@ -103,6 +106,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <Button
+                    android:id="@+id/btn_guardar_plan_practica"
                     android:layout_marginTop="20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

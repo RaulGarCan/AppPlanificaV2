@@ -25,6 +25,8 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class AcitivityHome extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -67,6 +69,8 @@ public class AcitivityHome extends AppCompatActivity implements NavigationView.O
         }
 
         obtenerDatosUsuario();
+
+        addModulosDB();
     }
     public void cerrarSesion(){
         preferencias.edit().putString("Email","none").apply();
@@ -123,5 +127,18 @@ public class AcitivityHome extends AppCompatActivity implements NavigationView.O
                 }
             }
         });
+    }
+    public void addModulosDB(){
+        Map<String,Object> modulos = new HashMap<>();
+        ArrayList<String> listaModulos = new ArrayList<>();
+        listaModulos.add("SGE");
+        listaModulos.add("AD");
+        listaModulos.add("PSYP");
+        listaModulos.add("DI");
+        listaModulos.add("PMDM");
+        listaModulos.add("EIE");
+        String clave = "DAM2";
+        modulos.put(clave,listaModulos);
+        db.collection("modulos").document(clave).set(modulos);
     }
 }
