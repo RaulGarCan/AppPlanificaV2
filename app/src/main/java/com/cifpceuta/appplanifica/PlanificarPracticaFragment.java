@@ -112,7 +112,7 @@ public class PlanificarPracticaFragment extends Fragment {
                         if(task.isSuccessful()){
                             Log.d("DatosAntiguosPracticas","Datos recibidos correctamente");
                             DocumentSnapshot document = task.getResult();
-                            Practica practicaNueva = new Practica(moduloPrac, descripcionPrac, fechaInicioPrac, fechaFinPrac, tituloPrac);
+                            Practica practicaNueva = new Practica(moduloPrac, tituloPrac, fechaInicioPrac, fechaFinPrac, descripcionPrac);
                             ArrayList<Practica> practicas;
                             if(document.exists()){
                                 practicas = (ArrayList<Practica>) document.get("practicas");

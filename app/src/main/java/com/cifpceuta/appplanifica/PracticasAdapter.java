@@ -1,12 +1,15 @@
 package com.cifpceuta.appplanifica;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -31,6 +34,18 @@ public class PracticasAdapter extends RecyclerView.Adapter<PracticasAdapter.View
     @Override
     public void onBindViewHolder(@NonNull PracticasAdapter.ViewHolder holder, int position) {
         Practica practica = new Practica((Map<String, Object>) lista_practicas.get(position));
+        int color = practica.getTiempoPlazo();
+        switch (color){
+            case -1:
+                holder.cardView.setCardBackgroundColor(ContextCompat.getColor(holder.cardView.getContext(), R.color.plazo_terminado));
+                break;
+            case 0:
+                holder.cardView.setCardBackgroundColor(ContextCompat.getColor(holder.cardView.getContext(), R.color.plazo_cercano));
+                break;
+            case 1:
+                holder.cardView.setCardBackgroundColor(ContextCompat.getColor(holder.cardView.getContext(), R.color.plazo_correcto));
+                break;
+        }
         holder.bindData(grupo, practica.getModulo(), practica.getTitulo(), practica.getFechaInicio(), practica.getFechaFin());
     }
 

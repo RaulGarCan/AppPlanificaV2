@@ -2,4 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="plazo_terminado">#F44336</color>
+    <color name="plazo_cercano">#FF9800</color>
+    <color name="plazo_correcto">#8BC34A</color>
 </resources>

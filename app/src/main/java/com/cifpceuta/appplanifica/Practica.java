@@ -1,5 +1,8 @@
 package com.cifpceuta.appplanifica;
 
+import java.time.LocalDate;
+import java.time.chrono.ChronoPeriod;
+import java.time.temporal.ChronoUnit;
 import java.util.Map;
 
 public class Practica {
@@ -63,5 +66,22 @@ public class Practica {
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;
+    }
+    public int getTiempoPlazo(){
+        // 0-1 Dias -> Rojo (-1)
+        // 1-3 Dias -> Ambar (0)
+        // >3 dias -> Verde (1)
+        String[] datosFechaInicio = fechaInicio.split("/");
+        String[] datosFechaFin = fechaFin.split("/");
+        LocalDate fechaInicio = LocalDate.of(Integer.parseInt(datosFechaInicio[2]),Integer.parseInt(datosFechaInicio[1]),Integer.parseInt(datosFechaInicio[0]));
+        LocalDate fechaFin = LocalDate.of(Integer.parseInt(datosFechaFin[2]),Integer.parseInt(datosFechaFin[1]),Integer.parseInt(datosFechaFin[0]));
+        long diferenciaDias = ChronoPeriod.between(fechaInicio, fechaFin).get(ChronoUnit.DAYS);
+        if(diferenciaDias<=1){
+            return -1; // Rojo
+        } else if(diferenciaDias>3) {
+            return 1; // Verde
+        } else {
+            return 0; // Ambar
+        }
     }
 }
