@@ -112,31 +112,34 @@ public class PlanificarPracticaFragment extends Fragment {
                         if(task.isSuccessful()){
                             Log.d("DatosAntiguosPracticas","Datos recibidos correctamente");
                             DocumentSnapshot document = task.getResult();
+                            Practica practicaNueva = new Practica(moduloPrac, descripcionPrac, fechaInicioPrac, fechaFinPrac, tituloPrac);
+                            ArrayList<Practica> practicas;
                             if(document.exists()){
-                                ArrayList<Practica> practicas = (ArrayList<Practica>) document.get("practicas");
-                                practicas.add(new Practica(moduloPrac, descripcionPrac, fechaInicioPrac, fechaFinPrac, tituloPrac));
-
+                                practicas = (ArrayList<Practica>) document.get("practicas");
+                                practicas.add(practicaNueva);
                                 datos.put("practicas",practicas);
-
-                                db.collection("practicas").document(grupoPrac).set(datos).
-                                        addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                if (task.isSuccessful()){
-                                                    Log.d("GuardarPracticaNueva","Datos guardados correctamente");
-                                                    Toast.makeText(PlanificarPracticaFragment.this.getContext(),"Practica guardada correctamente",Toast.LENGTH_LONG).show();
-                                                    etTituloPrac.setText("");
-                                                    etFechaInicioPrac.setText("");
-                                                    etFechaFinPrac.setText("");
-                                                    etDescripcionPrac.setText("");
-                                                } else {
-                                                    Log.w("GuardarPracticaNueva","Error: "+task.getException());
-                                                }
-                                            }
-                                        });
                             } else {
+                                practicas = new ArrayList<>();
+                                practicas.add(practicaNueva);
+                                datos.put("practicas",practicas);
                                 Log.w("DatosAntiguosPracticas","Documento no encontrado");
                             }
+                            db.collection("practicas").document(grupoPrac).set(datos).
+                                    addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()){
+                                                Log.d("GuardarPracticaNueva","Datos guardados correctamente");
+                                                Toast.makeText(PlanificarPracticaFragment.this.getContext(),"Practica guardada correctamente",Toast.LENGTH_LONG).show();
+                                                etTituloPrac.setText("");
+                                                etFechaInicioPrac.setText("");
+                                                etFechaFinPrac.setText("");
+                                                etDescripcionPrac.setText("");
+                                            } else {
+                                                Log.w("GuardarPracticaNueva","Error: "+task.getException());
+                                            }
+                                        }
+                                    });
                         } else {
                             Log.w("DatosAntiguosPracticas","Error: "+task.getException());
                         }
