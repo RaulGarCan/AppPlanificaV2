@@ -164,7 +164,7 @@ public class PlanificarPracticaFragment extends Fragment {
                                 for(int i = 0; i<modulos.length; i++){
                                     modulos[i] = listaModulos.get(i);
                                 }
-                                ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(PlanificarPracticaFragment.this.getContext(), android.R.layout.simple_spinner_dropdown_item,modulos);
+                                ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(PlanificarPracticaFragment.this.getContext(), android.R.layout.simple_spinner_dropdown_item, modulos);
                                 spModulo.setAdapter(adapter);
                             } else {
                                 Log.w("ModulosGrupos","Documento no encontrado");

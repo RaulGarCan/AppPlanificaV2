@@ -34,7 +34,7 @@ public class PracticasAdapter extends RecyclerView.Adapter<PracticasAdapter.View
     @Override
     public void onBindViewHolder(@NonNull PracticasAdapter.ViewHolder holder, int position) {
         Practica practica = new Practica((Map<String, Object>) lista_practicas.get(position));
-        int color = practica.getTiempoPlazo();
+        int color = practica.tiempoPlazo();
         switch (color){
             case -1:
                 holder.cardView.setCardBackgroundColor(ContextCompat.getColor(holder.cardView.getContext(), R.color.plazo_terminado));

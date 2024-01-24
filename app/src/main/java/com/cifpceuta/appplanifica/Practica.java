@@ -35,15 +35,12 @@ public class Practica {
     public void setModulo(String modulo) {
         this.modulo = modulo;
     }
-
-    public String getDescripcion() {
-        return descripcion;
+    public String getTitulo() {
+        return titulo;
     }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
-
     public String getFechaInicio() {
         return fechaInicio;
     }
@@ -60,14 +57,14 @@ public class Practica {
         this.fechaFin = fechaFin;
     }
 
-    public String getTitulo() {
-        return titulo;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
-    public int getTiempoPlazo(){
+    public int tiempoPlazo(){
         // 0-1 Dias -> Rojo (-1)
         // 1-3 Dias -> Ambar (0)
         // >3 dias -> Verde (1)
