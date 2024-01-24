@@ -68,9 +68,8 @@ public class Practica {
         // 0-1 Dias -> Rojo (-1)
         // 1-3 Dias -> Ambar (0)
         // >3 dias -> Verde (1)
-        String[] datosFechaInicio = fechaInicio.split("/");
         String[] datosFechaFin = fechaFin.split("/");
-        LocalDate fechaInicio = LocalDate.of(Integer.parseInt(datosFechaInicio[2]),Integer.parseInt(datosFechaInicio[1]),Integer.parseInt(datosFechaInicio[0]));
+        LocalDate fechaInicio = LocalDate.now();
         LocalDate fechaFin = LocalDate.of(Integer.parseInt(datosFechaFin[2]),Integer.parseInt(datosFechaFin[1]),Integer.parseInt(datosFechaFin[0]));
         long diferenciaDias = ChronoPeriod.between(fechaInicio, fechaFin).get(ChronoUnit.DAYS);
         if(diferenciaDias<=1){
