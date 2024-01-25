@@ -99,8 +99,8 @@ public class ListarPracticasSemanalFragment extends Fragment {
                                     DocumentSnapshot document = task.getResult();
                                     if(document.exists()){
                                         practicas = (ArrayList<Practica>) document.get("practicas");
-                                        practicas = PracticasAdapter.estaDentroSemana(practicas,LocalDate.now(),1);
-                                        rvListaPracticasSemanal.setAdapter(new PracticasAdapter(practicas, grupo));
+                                        ArrayList<Practica> lista_practicas = PracticasAdapter.estaDentroSemana(practicas,LocalDate.now(),1);
+                                        rvListaPracticasSemanal.setAdapter(new PracticasAdapter(lista_practicas, grupo));
                                         rvListaPracticasSemanal.setLayoutManager(new LinearLayoutManager(ListarPracticasSemanalFragment.this.getContext()));
                                     } else {
                                         Log.w("RellenarRecyclerView","Documento no encontrado");
@@ -123,7 +123,7 @@ public class ListarPracticasSemanalFragment extends Fragment {
             public void onTabSelected(TabLayout.Tab tab) {
                 PracticasAdapter adapter = (PracticasAdapter) rvListaPracticasSemanal.getAdapter();
                 ArrayList<Practica> practicas = adapter.estaDentroSemana(verPracticas(),LocalDate.now(),tab.getPosition()+1);
-                Log.d("ListaPracticas",practicas.toString());
+                Log.d("ListaPracticas",verPracticas().toString());
                 rvListaPracticasSemanal.setAdapter(new PracticasAdapter(practicas, adapter.grupo));
             }
 

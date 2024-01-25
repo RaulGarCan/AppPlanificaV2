@@ -104,9 +104,9 @@ public class PracticasAdapter extends RecyclerView.Adapter<PracticasAdapter.View
             if (fechaActual.getYear() == fecha.getYear() && fechaActual.getMonthValue() == fecha.getMonthValue()){
                 boolean tmp = fechaActual.getYear() == fecha.getYear() && fechaActual.getMonthValue() == fecha.getMonthValue();
                 Log.d("ListaMismoAnioYMes",""+tmp);
-                // Esto siempre da como resultado 1
                 int semanaFecha = fecha.get(WeekFields.of(DayOfWeek.MONDAY, 1).weekOfMonth());
-                Log.d("ListaSemanaFecha",""+semanaFecha);
+                Log.d("ListaSemanaFecha","Fecha: "+fecha+" Semana: "+semanaFecha);
+                Log.d("ListaSemana",""+semana);
                 if(semanaFecha == semana){
                     practicasSemana.add(p);
                 }
