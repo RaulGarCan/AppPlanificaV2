@@ -18,6 +18,9 @@
         android:id="@+id/list_practicas"
         android:title="Ver prácticas" />
     <item
+        android:id="@+id/list_practicas_semanal"
+        android:title="Practicas semanales"/>
+    <item
         android:id="@+id/nav_settings"
         android:title="Preferencias" />
 

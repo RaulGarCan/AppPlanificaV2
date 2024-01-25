@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -18,13 +19,17 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.w3c.dom.Document;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -93,6 +98,27 @@ public class PlanificarPracticaFragment extends Fragment {
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        etFechaInicioPrac.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    mostrarSelectorFecha(etFechaInicioPrac);
+                    //fechaIni = dateString;
+                }
+                return false;
+            }
+        });
+        etFechaFinPrac.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    mostrarSelectorFecha(etFechaFinPrac);
+                    //fechaIni = dateString;
+                }
+                return false;
+            }
+        });
 
         btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,5 +209,28 @@ public class PlanificarPracticaFragment extends Fragment {
         });
         // Inflate the layout for this fragment
         return rootView;
+    }
+    public void mostrarSelectorFecha(EditText etFechaInicio){
+        MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker().build();
+
+        // Manejar la fecha seleccionada
+        datePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
+            @Override
+            public void onPositiveButtonClick(Long selection) {
+                String dateString;
+                // Formatear la fecha seleccionada
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                dateString = dateFormat.format(new Date(selection));
+
+                // Mostrar la fecha en el TextView
+                etFechaInicio.setText(dateString);
+
+            }
+        });
+
+        // Mostrar el selector de fecha
+        if (getActivity() != null) {
+            datePicker.show(getActivity().getSupportFragmentManager(), datePicker.toString());
+        }
     }
 }

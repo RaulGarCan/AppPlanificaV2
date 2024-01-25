@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "AppPlanifica"
+rootProject.name = "AppPlanificaV2"
 include ':app'
