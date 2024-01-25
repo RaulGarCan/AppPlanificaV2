@@ -80,4 +80,12 @@ public class Practica {
             return 0; // Ambar
         }
     }
+    public LocalDate getFechaFinDate(){
+        String[] datos = fechaFin.split("/");
+        return LocalDate.of(Integer.parseInt(datos[2]),Integer.parseInt(datos[1]),Integer.parseInt(datos[0]));
+    }
+    public LocalDate getFechaInicioDate(){
+        String[] datos = fechaInicio.split("/");
+        return LocalDate.of(Integer.parseInt(datos[2]),Integer.parseInt(datos[1]),Integer.parseInt(datos[0]));
+    }
 }

@@ -1,6 +1,7 @@
 package com.cifpceuta.appplanifica;
 
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,16 +13,25 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.WeekFields;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class PracticasAdapter extends RecyclerView.Adapter<PracticasAdapter.ViewHolder> {
     ArrayList<Practica> lista_practicas;
     String grupo;
-
+    int semana;
     public PracticasAdapter(ArrayList<Practica> list_items,String grupo) {
         this.lista_practicas = list_items;
         this.grupo = grupo;
+    }
+    public PracticasAdapter(ArrayList<Practica> list_items, String grupo, int semana) {
+        this.grupo = grupo;
+        this.semana = semana;
+        this.lista_practicas = this.estaDentroSemana(LocalDate.now(),semana);
     }
 
     @NonNull
@@ -82,5 +92,18 @@ public class PracticasAdapter extends RecyclerView.Adapter<PracticasAdapter.View
     public void setFilterList(ArrayList<Practica> lista) {
         lista_practicas = lista;
         notifyDataSetChanged();
+    }
+    public ArrayList<Practica> estaDentroSemana(LocalDate fechaActual, int semana) {
+        ArrayList<Practica> practicasSemana = new ArrayList<>();
+        for(int i = 0; i<lista_practicas.size(); i++){
+            LocalDate fecha = lista_practicas.get(i).getFechaFinDate();
+            if (fechaActual.getYear() == fecha.getYear() && fechaActual.getYear() == fecha.getYear()){
+                int semanaFecha = fecha.get(WeekFields.of(DayOfWeek.MONDAY, 1).weekOfMonth());
+                if(semanaFecha == semana){
+                    practicasSemana.add(lista_practicas.get(i));
+                }
+            }
+        }
+        return practicasSemana;
     }
 }
