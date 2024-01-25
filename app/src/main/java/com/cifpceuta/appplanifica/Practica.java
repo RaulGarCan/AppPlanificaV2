@@ -3,6 +3,7 @@ package com.cifpceuta.appplanifica;
 import java.time.LocalDate;
 import java.time.chrono.ChronoPeriod;
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Practica {
@@ -21,6 +22,13 @@ public class Practica {
         this.descripcion = descripcion;
     }
     public Practica(Map<String, Object> mapa){
+        this.modulo = mapa.get("modulo").toString();
+        this.titulo = mapa.get("titulo").toString();
+        this.fechaInicio = mapa.get("fechaInicio").toString();
+        this.fechaFin = mapa.get("fechaFin").toString();
+        this.descripcion = mapa.get("descripcion").toString();
+    }
+    public Practica(HashMap<String, Object> mapa){
         this.modulo = mapa.get("modulo").toString();
         this.titulo = mapa.get("titulo").toString();
         this.fechaInicio = mapa.get("fechaInicio").toString();
@@ -80,12 +88,32 @@ public class Practica {
             return 0; // Ambar
         }
     }
-    public LocalDate getFechaFinDate(){
+    public LocalDate fechaFinDate(){
         String[] datos = fechaFin.split("/");
         return LocalDate.of(Integer.parseInt(datos[2]),Integer.parseInt(datos[1]),Integer.parseInt(datos[0]));
     }
-    public LocalDate getFechaInicioDate(){
+    public LocalDate fechaInicioDate(){
         String[] datos = fechaInicio.split("/");
         return LocalDate.of(Integer.parseInt(datos[2]),Integer.parseInt(datos[1]),Integer.parseInt(datos[0]));
+    }
+    public HashMap<String, Object> objetoAMap(){
+        HashMap<String, Object> datos = new HashMap<>();
+        datos.put("modulo",this.getModulo());
+        datos.put("titulo",this.getTitulo());
+        datos.put("fechaInicio",this.getFechaInicio());
+        datos.put("fechaFin",this.getFechaFin());
+        datos.put("descripcion",this.getDescripcion());
+        return datos;
+    }
+
+    @Override
+    public String toString() {
+        return "Practica{" +
+                "modulo='" + modulo + '\'' +
+                ", titulo='" + titulo + '\'' +
+                ", fechaInicio='" + fechaInicio + '\'' +
+                ", fechaFin='" + fechaFin + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                '}';
     }
 }

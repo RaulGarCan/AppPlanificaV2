@@ -1,13 +1,11 @@
 package com.cifpceuta.appplanifica;
 
-import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
@@ -17,21 +15,15 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 public class PracticasAdapter extends RecyclerView.Adapter<PracticasAdapter.ViewHolder> {
     ArrayList<Practica> lista_practicas;
     String grupo;
-    int semana;
     public PracticasAdapter(ArrayList<Practica> list_items,String grupo) {
         this.lista_practicas = list_items;
         this.grupo = grupo;
-    }
-    public PracticasAdapter(ArrayList<Practica> list_items, String grupo, int semana) {
-        this.grupo = grupo;
-        this.semana = semana;
-        this.lista_practicas = this.estaDentroSemana(LocalDate.now(),semana);
     }
 
     @NonNull
@@ -43,7 +35,12 @@ public class PracticasAdapter extends RecyclerView.Adapter<PracticasAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull PracticasAdapter.ViewHolder holder, int position) {
-        Practica practica = new Practica((Map<String, Object>) lista_practicas.get(position));
+        Practica practica;
+        try{
+            practica = new Practica((Map<String, Object>) lista_practicas.get(position));
+        }catch (ClassCastException e){
+            practica = lista_practicas.get(position);
+        }
         int color = practica.tiempoPlazo();
         switch (color){
             case -1:
@@ -93,14 +90,25 @@ public class PracticasAdapter extends RecyclerView.Adapter<PracticasAdapter.View
         lista_practicas = lista;
         notifyDataSetChanged();
     }
-    public ArrayList<Practica> estaDentroSemana(LocalDate fechaActual, int semana) {
+    public static ArrayList<Practica> estaDentroSemana(ArrayList<Practica> lista_practicas,LocalDate fechaActual, int semana) {
         ArrayList<Practica> practicasSemana = new ArrayList<>();
+        Log.d("ListaPracticasSemana",""+semana);
         for(int i = 0; i<lista_practicas.size(); i++){
-            LocalDate fecha = lista_practicas.get(i).getFechaFinDate();
-            if (fechaActual.getYear() == fecha.getYear() && fechaActual.getYear() == fecha.getYear()){
+            Practica p;
+            try{
+                p = new Practica((Map<String, Object>) lista_practicas.get(i));
+            }catch (ClassCastException e){
+                p = lista_practicas.get(i);
+            }
+            LocalDate fecha = p.fechaFinDate();
+            if (fechaActual.getYear() == fecha.getYear() && fechaActual.getMonthValue() == fecha.getMonthValue()){
+                boolean tmp = fechaActual.getYear() == fecha.getYear() && fechaActual.getMonthValue() == fecha.getMonthValue();
+                Log.d("ListaMismoAnioYMes",""+tmp);
+                // Esto siempre da como resultado 1
                 int semanaFecha = fecha.get(WeekFields.of(DayOfWeek.MONDAY, 1).weekOfMonth());
+                Log.d("ListaSemanaFecha",""+semanaFecha);
                 if(semanaFecha == semana){
-                    practicasSemana.add(lista_practicas.get(i));
+                    practicasSemana.add(p);
                 }
             }
         }

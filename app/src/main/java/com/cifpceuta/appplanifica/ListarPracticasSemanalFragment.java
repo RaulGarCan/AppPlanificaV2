@@ -29,6 +29,7 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class ListarPracticasSemanalFragment extends Fragment {
+    public ArrayList<Practica> practicas;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -97,8 +98,9 @@ public class ListarPracticasSemanalFragment extends Fragment {
                                 if(task.isSuccessful()){
                                     DocumentSnapshot document = task.getResult();
                                     if(document.exists()){
-                                        ArrayList<Practica> practicas = (ArrayList<Practica>) document.get("practicas");
-                                        rvListaPracticasSemanal.setAdapter(new PracticasAdapter(practicas, grupo, 1));
+                                        practicas = (ArrayList<Practica>) document.get("practicas");
+                                        practicas = PracticasAdapter.estaDentroSemana(practicas,LocalDate.now(),1);
+                                        rvListaPracticasSemanal.setAdapter(new PracticasAdapter(practicas, grupo));
                                         rvListaPracticasSemanal.setLayoutManager(new LinearLayoutManager(ListarPracticasSemanalFragment.this.getContext()));
                                     } else {
                                         Log.w("RellenarRecyclerView","Documento no encontrado");
@@ -120,7 +122,8 @@ public class ListarPracticasSemanalFragment extends Fragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 PracticasAdapter adapter = (PracticasAdapter) rvListaPracticasSemanal.getAdapter();
-                ArrayList<Practica> practicas = adapter.estaDentroSemana(LocalDate.now(),1);
+                ArrayList<Practica> practicas = adapter.estaDentroSemana(verPracticas(),LocalDate.now(),tab.getPosition()+1);
+                Log.d("ListaPracticas",practicas.toString());
                 rvListaPracticasSemanal.setAdapter(new PracticasAdapter(practicas, adapter.grupo));
             }
 
@@ -136,5 +139,8 @@ public class ListarPracticasSemanalFragment extends Fragment {
         });
         // Inflate the layout for this fragment
         return rootView;
+    }
+    public ArrayList<Practica> verPracticas(){
+        return practicas;
     }
 }
