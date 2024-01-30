@@ -1,8 +1,14 @@
 package com.cifpceuta.appplanifica;
 
+import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -161,6 +167,9 @@ public class PlanificarPracticaFragment extends Fragment {
                                                 etFechaInicioPrac.setText("");
                                                 etFechaFinPrac.setText("");
                                                 etDescripcionPrac.setText("");
+
+                                                createNotificationChannel();
+                                                crearNotificacion();
                                             } else {
                                                 Log.w("GuardarPracticaNueva","Error: "+task.getException());
                                             }
@@ -233,4 +242,28 @@ public class PlanificarPracticaFragment extends Fragment {
             datePicker.show(getActivity().getSupportFragmentManager(), datePicker.toString());
         }
     }
+    @SuppressLint("MissingPermission")
+    public void crearNotificacion(){
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this.getContext(),"canal")
+                .setSmallIcon(R.drawable.notif_24)
+                .setContentTitle("Nueva práctica")
+                .setContentText("Se ha creado una nueva práctica")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        NotificationManagerCompat manager = NotificationManagerCompat.from(this.getContext());
+        manager.notify(0,builder.build());
+    }
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is not in the Support Library.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "canal";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("canal", name, importance);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this.
+            NotificationManager notificationManager = this.getContext().getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
 }
