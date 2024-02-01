@@ -118,6 +118,13 @@ public class AcitivityHome extends AppCompatActivity implements NavigationView.O
                     .replace(R.id.frame_fragments,listarPracticasSemanalFragment)
                     .commit();
         }
+        else
+        if (itemId == R.id.crear_actividad_extra){
+            ActividadesExtraFragment actividadesExtraFragment = new ActividadesExtraFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.frame_fragments,actividadesExtraFragment)
+                    .commit();
+        }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }

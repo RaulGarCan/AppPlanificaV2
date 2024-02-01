@@ -5,4 +5,6 @@
     <color name="plazo_terminado">#F44336</color>
     <color name="plazo_cercano">#FF9800</color>
     <color name="plazo_correcto">#8BC34A</color>
+    <color name="fondo_dialog">#70CAEE</color>
+    <color name="color_cardview_act_extra">#008F66</color>
 </resources>
